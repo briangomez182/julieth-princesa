@@ -1,0 +1,4 @@
+.DS_Store
+img/cameraShot/*
+!img/cameraShot/.gitkeep
+node_modules/

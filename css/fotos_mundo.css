@@ -1,0 +1,115 @@
+/* ---------- Fotos en el mundo: botón "Borrar foto" y confirmación ---------- */
+#btn-borrar-foto {
+  position: fixed; left: 50%; bottom: calc(176px + 5vh + env(safe-area-inset-bottom)); z-index: 7;
+  transform: translate(-50%, 30px) scale(.8); opacity: 0; pointer-events: none; touch-action: manipulation;
+  transition: opacity .2s, transform .25s cubic-bezier(.3, 1.6, .5, 1);
+  display: flex; align-items: center; gap: 10px; padding: 12px 26px 12px 20px; min-height: 60px; cursor: pointer;
+  font: 900 24px var(--fuente, ui-rounded, system-ui, sans-serif); color: #fff; background: #c38bff;
+  border: 4px solid var(--baya, #6b2460); border-radius: 99px;
+  box-shadow: 0 7px 0 var(--baya, #6b2460), 0 14px 24px rgba(60, 20, 70, .3);
+  -webkit-tap-highlight-color: transparent; user-select: none;
+}
+#btn-borrar-foto.visible { opacity: 1; transform: translate(-50%, 0) scale(1); pointer-events: auto; animation: saltito-foto 1.3s ease-in-out infinite; }
+#btn-borrar-foto:active { transform: translate(-50%, 4px) scale(.96); box-shadow: 0 3px 0 var(--baya, #6b2460); }
+#btn-borrar-foto .ico { font-size: 28px; line-height: 1; }
+#btn-borrar-foto kbd { margin-left: 4px; font: inherit; font-size: 16px; color: var(--baya, #6b2460); background: #fff6e5; border-radius: 8px; padding: 1px 7px; }
+body.tactil #btn-borrar-foto kbd, body.tactil-foto #btn-borrar-foto kbd { display: none; }
+body.charla #btn-borrar-foto, body.mapa #btn-borrar-foto, body:not(.jugando) #btn-borrar-foto { display: none; }
+@keyframes saltito-foto { 50% { transform: translate(-50%, -6px) scale(1.03); } }
+
+#confirmar-foto {
+  position: fixed; inset: 0; z-index: 25; display: none; align-items: center; justify-content: center; padding: 16px;
+  background: rgba(60, 20, 70, .45);
+}
+#confirmar-foto.visible { display: flex; }
+#confirmar-foto .tarjeta-foto {
+  width: min(360px, calc(100vw - 32px)); text-align: center; padding: 14px 18px 18px;
+  background: var(--crema, #fff6e5); border: 5px solid var(--baya, #6b2460); border-radius: 30px;
+  box-shadow: 0 8px 0 var(--baya, #6b2460), 0 22px 44px rgba(60, 20, 70, .4);
+  animation: aparece-foto .28s cubic-bezier(.3, 1.5, .5, 1);
+}
+@keyframes aparece-foto { from { transform: scale(.8); opacity: 0; } }
+#confirmar-foto .mini-foto { width: 100%; height: auto; aspect-ratio: 440 / 340; display: block; }
+#confirmar-foto .pregunta {
+  margin: 4px 0 14px; font: 900 clamp(22px, 5vw, 28px) var(--fuente, ui-rounded, system-ui, sans-serif); color: var(--baya, #6b2460);
+}
+#confirmar-foto .opciones-foto { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+#confirmar-foto .opciones-foto button {
+  min-height: 58px; padding: 10px 12px; cursor: pointer; touch-action: manipulation;
+  font: 900 21px var(--fuente, ui-rounded, system-ui, sans-serif); color: #fff;
+  border: 4px solid var(--baya, #6b2460); border-radius: 20px; box-shadow: 0 5px 0 var(--baya, #6b2460);
+  -webkit-tap-highlight-color: transparent;
+}
+#confirmar-foto .si { background: #ff5d8f; }
+#confirmar-foto .no { background: #5ad1ff; }
+#confirmar-foto .opciones-foto button:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--baya, #6b2460); }
+#confirmar-foto .opciones-foto button:focus-visible { outline: 4px solid var(--oro, #ffc93c); outline-offset: 2px; }
+
+@media (max-height: 520px) {
+  #btn-borrar-foto { bottom: calc(118px + 5vh + env(safe-area-inset-bottom)); font-size: 20px; padding: 8px 20px 8px 16px; min-height: 50px; }
+  #confirmar-foto .tarjeta-foto { width: min(300px, calc(100vw - 32px)); padding: 8px 14px 12px; }
+  #confirmar-foto .mini-foto { max-height: 42vh; object-fit: contain; }
+  #confirmar-foto .pregunta { margin: 2px 0 8px; font-size: 20px; }
+  #confirmar-foto .opciones-foto button { min-height: 46px; font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { #btn-borrar-foto.visible { animation: none; } }
+
+/* ---------- Visor de fotos (ver en grande) ---------- */
+#botones #btn-album .emoji { font-size: 21px; line-height: 1; display: block; transform: translateY(1px); }
+@media (max-width: 720px), (max-height: 520px) { #botones #btn-album .emoji { font-size: 17px; } }
+body:not(.jugando) #btn-album { display: none; }
+body.viendo-foto #btn-hablar, body.viendo-foto #btn-montar, body.viendo-foto #tactil, body.viendo-foto #aviso,
+body.viendo-foto #minimapa, body.viendo-foto #btn-borrar-foto { display: none !important; }
+
+#visor-foto {
+  position: fixed; inset: 0; z-index: 16; display: none; align-items: center; justify-content: center; padding: 12px;
+  background: radial-gradient(ellipse at center, rgba(90, 50, 140, .82), rgba(30, 14, 50, .95));
+}
+#visor-foto.visible { display: flex; animation: aparece-foto .25s ease-out; }
+#visor-foto .visor-caja { display: flex; flex-direction: column; align-items: center; gap: 10px; width: min(1100px, 100%); max-height: 100%; }
+#visor-foto .visor-arriba { display: flex; align-items: center; gap: 12px; width: 100%; color: #fff6e5; font-weight: 900; }
+#visor-foto .visor-titulo { font-size: clamp(20px, 3vh, 28px); text-shadow: 0 3px 0 var(--baya, #6b2460); }
+#visor-foto .visor-contador { font-size: 18px; background: rgba(255, 255, 255, .18); border-radius: 99px; padding: 3px 12px; }
+#visor-foto button {
+  font: inherit; font-weight: 900; cursor: pointer; color: var(--baya, #6b2460); background: var(--crema, #fff6e5);
+  border: 4px solid var(--baya, #6b2460); border-radius: 99px; box-shadow: 0 4px 0 var(--baya, #6b2460);
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+#visor-foto button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--baya, #6b2460); }
+#visor-foto button:focus-visible { outline: 4px solid var(--oro, #ffc93c); outline-offset: 2px; }
+#visor-foto button[hidden] { display: none; }
+#visor-foto .visor-cerrar { margin-left: auto; width: 52px; height: 52px; font-size: 24px; }
+#visor-foto .visor-centro { display: flex; align-items: center; gap: 12px; width: 100%; justify-content: center; min-height: 0; }
+#visor-foto .visor-flecha { flex: none; width: 60px; height: 60px; font-size: 26px; }
+#visor-foto .visor-marco {
+  position: relative; display: flex; align-items: center; justify-content: center; min-width: 200px; min-height: 150px;
+  padding: clamp(8px, 1.6vh, 16px); border-radius: 22px; touch-action: pan-y;
+  background: conic-gradient(from 20deg, #fff0a8, #ffc93c, #d98a00, #ffc93c, #fff0a8, #e0a020, #ffc93c, #fff0a8);
+  box-shadow: 0 0 0 5px var(--baya, #6b2460), 0 0 40px 8px rgba(255, 220, 140, .5);
+}
+#visor-foto .visor-lienzo {
+  display: block; max-width: min(calc(100vw - 200px), 1000px); max-height: calc(100vh - 230px);
+  width: auto; height: auto; border-radius: 12px; background: #fff;
+}
+#visor-foto .visor-lienzo.entra { animation: aparece-foto .3s cubic-bezier(.3, 1.4, .5, 1); }
+#visor-foto .visor-lienzo[hidden], #visor-foto .visor-cargando[hidden] { display: none; }
+#visor-foto .visor-cargando { color: var(--baya, #6b2460); font-weight: 900; font-size: 20px; padding: 40px; }
+#visor-foto .visor-fecha { margin: 0; min-height: 1.2em; color: #fff6e5; font-weight: 800; font-size: 16px; opacity: .85; }
+#visor-foto .visor-tira { display: flex; gap: 8px; max-width: 100%; overflow-x: auto; padding: 4px 6px 8px; scrollbar-width: thin; }
+#visor-foto .visor-mini { flex: none; padding: 0; border-width: 3px; border-radius: 12px; overflow: hidden; opacity: .65; box-shadow: none; }
+#visor-foto .visor-mini canvas { display: block; width: 72px; height: 54px; }
+#visor-foto .visor-mini.activa { opacity: 1; border-color: var(--oro, #ffc93c); transform: scale(1.08); }
+
+@media (max-width: 600px) {
+  #visor-foto .visor-centro { position: relative; }
+  #visor-foto .visor-flecha { position: absolute; z-index: 1; top: 50%; transform: translateY(-50%); width: 46px; height: 46px; font-size: 20px; opacity: .92; }
+  #visor-foto .visor-flecha:first-child { left: 2px; }
+  #visor-foto .visor-flecha:last-child { right: 2px; }
+  #visor-foto .visor-flecha:active { transform: translateY(calc(-50% + 3px)); }
+  #visor-foto .visor-lienzo { max-width: calc(100vw - 52px); max-height: calc(100vh - 250px); }
+}
+@media (max-height: 520px) {
+  #visor-foto .visor-tira, #visor-foto .visor-fecha { display: none; }
+  #visor-foto .visor-lienzo { max-height: calc(100vh - 110px); }
+}
+@media (prefers-reduced-motion: reduce) { #visor-foto.visible, #visor-foto .visor-lienzo.entra { animation: none; } }

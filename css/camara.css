@@ -1,0 +1,127 @@
+/* ---------- Cámara de fotos (marco de princesa) ---------- */
+#botones #btn-camara .emoji { font-size: 22px; line-height: 1; display: block; transform: translateY(1px); }
+@media (max-width: 720px), (max-height: 520px) {
+  #botones #btn-camara .emoji { font-size: 18px; }
+}
+
+#camara {
+  position: fixed; inset: 0; z-index: 25; display: none; align-items: center; justify-content: center;
+  background: radial-gradient(ellipse at center, rgba(255, 140, 190, .82), rgba(107, 36, 96, .95));
+  padding: calc(12px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+  pointer-events: auto; touch-action: manipulation; font-family: var(--fuente); color: var(--baya);
+}
+#camara.visible { display: flex; animation: camaraAparece .35s ease-out; }
+@keyframes camaraAparece { from { opacity: 0; transform: scale(.96); } }
+body.camara-abierta #btn-hablar, body.camara-abierta #btn-montar, body.camara-abierta #tactil,
+body.camara-abierta #aviso, body.camara-abierta #minimapa { display: none !important; }
+
+.camara-escena {
+  display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.8vh, 14px);
+  width: 100%; max-height: 100%;
+}
+
+/* marco dorado con corona */
+.camara-marco {
+  position: relative; width: min(58vh, 88vw, 560px); aspect-ratio: 3 / 4; border-radius: 34px;
+  padding: clamp(12px, 2.2vh, 20px); margin-top: clamp(28px, 6vh, 56px);
+  background: conic-gradient(from 20deg, #fff0a8, #ffc93c, #d98a00, #ffc93c, #fff0a8, #e0a020, #ffc93c, #fff0a8);
+  box-shadow: 0 0 0 5px var(--baya), 0 0 0 11px var(--rosa), 0 0 0 14px var(--baya),
+    0 0 40px 14px rgba(255, 220, 140, .55), 0 14px 30px rgba(60, 20, 70, .4);
+  animation: camaraFlota 4s ease-in-out infinite;
+}
+@keyframes camaraFlota { 50% { transform: translateY(-5px); } }
+.camara-corona {
+  position: absolute; left: 50%; top: 0; width: 36%; aspect-ratio: 2 / 1; transform: translate(-50%, -70%); z-index: 2;
+  background: linear-gradient(#fff0a8, #ffc93c 55%, #d98a00);
+  clip-path: polygon(0 100%, 0 25%, 22% 62%, 50% 0, 78% 62%, 100% 25%, 100% 100%);
+  filter: drop-shadow(0 0 6px rgba(255, 230, 150, .9));
+}
+.camara-corona::after {
+  content: ""; position: absolute; left: 50%; top: 60%; width: 18%; aspect-ratio: 1; border-radius: 50%;
+  transform: translate(-50%, -50%); background: radial-gradient(circle at 35% 35%, #fff, #ff5d8f 60%, #b0285a);
+}
+.camara-deco {
+  position: absolute; z-index: 3; pointer-events: none; line-height: 1;
+  font-size: clamp(22px, 4.4vh, 36px); filter: drop-shadow(0 2px 0 rgba(107, 36, 96, .6));
+  animation: camaraBrilla 2.4s ease-in-out infinite;
+}
+.camara-deco.c1 { left: -4%; top: 6%; }
+.camara-deco.c2 { right: -4%; top: 6%; animation-delay: -.6s; }
+.camara-deco.c3 { left: -4%; bottom: 6%; animation-delay: -1.2s; }
+.camara-deco.c4 { right: -4%; bottom: 6%; animation-delay: -1.8s; }
+.camara-deco.estrella { font-size: clamp(18px, 3.4vh, 28px); }
+.camara-deco.e1 { left: 12%; top: -3%; animation-delay: -.3s; }
+.camara-deco.e2 { right: 12%; top: -3%; animation-delay: -.9s; }
+.camara-deco.e3 { left: 44%; bottom: -3%; animation-delay: -1.5s; }
+.camara-deco.e4 { left: -5%; top: 45%; animation-delay: -2.1s; }
+@keyframes camaraBrilla { 50% { transform: scale(1.18) rotate(8deg); opacity: .8; } }
+
+.camara-vidrio {
+  position: relative; width: 100%; height: 100%; border-radius: 22px; overflow: hidden;
+  background: radial-gradient(ellipse at 40% 30%, #fff0f6, #ffc2da 55%, #ff8fbb);
+  box-shadow: inset 0 0 0 4px rgba(107, 36, 96, .6), inset 0 0 30px rgba(107, 36, 96, .35);
+}
+#camara-video, #camara-foto {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
+}
+#camara-video { transform: scaleX(-1); opacity: 0; transition: opacity .5s ease; }
+#camara[data-estado="vivo"] #camara-video, #camara[data-estado="cuenta"] #camara-video { opacity: 1; }
+#camara-foto { opacity: 0; }
+#camara.con-foto #camara-foto { opacity: 1; }
+#camara.con-foto #camara-video { opacity: 0; }
+#camara.guardada .camara-vidrio { animation: camaraGuardada .6s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes camaraGuardada { 40% { transform: scale(1.05); } }
+
+/* cuenta regresiva grande */
+#camara-cuenta {
+  position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
+  font-weight: 900; font-size: clamp(110px, 24vh, 220px); color: #fff6b0; line-height: 1;
+  text-shadow: 0 6px 0 var(--baya), 0 0 30px rgba(255, 93, 143, .9);
+}
+#camara-cuenta.late { animation: camaraCuenta .9s ease-out; }
+@keyframes camaraCuenta { from { transform: scale(1.8); opacity: 0; } 25% { transform: scale(1); opacity: 1; } to { transform: scale(.8); opacity: .2; } }
+
+/* flash blanco */
+#camara-flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+#camara-flash.flash { animation: camaraFlash .55s ease-out; }
+@keyframes camaraFlash { from { opacity: 1; } to { opacity: 0; } }
+
+#camara-texto {
+  margin: 0; min-height: 1.3em; max-width: min(640px, 92vw); text-align: center; color: #fff6e5;
+  font-weight: 900; font-size: clamp(17px, 2.8vh, 26px); line-height: 1.3; text-wrap: balance;
+  text-shadow: 0 3px 0 var(--baya), 0 0 16px rgba(255, 93, 143, .8);
+}
+#camara[data-estado="error"] #camara-texto { font-size: clamp(16px, 2.4vh, 22px); }
+
+#camara-botones { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+#camara-botones button {
+  font: inherit; font-weight: 900; font-size: clamp(17px, 2.6vh, 22px); color: var(--baya); cursor: pointer;
+  min-height: 52px; background: var(--crema); border: 4px solid var(--baya); border-radius: 20px; padding: 10px 20px;
+  box-shadow: 0 5px 0 var(--baya); touch-action: manipulation;
+}
+#camara-botones button.principal { background: var(--oro); font-size: clamp(19px, 3vh, 26px); padding: 12px 26px; }
+#camara-guardar.principal { background: var(--rosa); color: #fff; text-shadow: 0 2px 0 var(--baya); }
+#camara-botones button:hover:not(:disabled) { filter: brightness(1.06); }
+#camara-botones button:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 1px 0 var(--baya); }
+#camara-botones button:focus-visible { outline: 3px solid var(--oro); outline-offset: 3px; }
+#camara-botones button:disabled { opacity: .55; cursor: default; }
+#camara-botones button[hidden] { display: none; }
+
+/* celular vertical */
+@media (max-width: 520px) {
+  .camara-marco { width: min(52vh, 84vw); border-radius: 26px; }
+  #camara-botones button { padding: 9px 16px; }
+}
+/* tablet / celular horizontal: marco a la izquierda, texto y botones a la derecha */
+@media (orientation: landscape) and (max-height: 620px) {
+  .camara-escena {
+    display: grid; grid-template-columns: auto minmax(0, 40vw); grid-template-rows: 1fr auto auto 1fr;
+    align-items: center; justify-content: center; column-gap: clamp(14px, 4vw, 40px); row-gap: 12px; height: 100%;
+  }
+  .camara-marco { grid-row: 1 / 5; width: auto; height: min(calc(100vh - 70px), 86vw); margin-top: 22px; }
+  #camara-texto { grid-column: 2; grid-row: 2; }
+  #camara-botones { grid-column: 2; grid-row: 3; flex-direction: column; align-items: stretch; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .camara-marco, .camara-deco { animation: none; }
+}
