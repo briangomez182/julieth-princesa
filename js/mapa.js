@@ -177,10 +177,28 @@
   };
 
   // ---------- Mapa completo (al tocar el minimapa o pulsar M) ----------
+  // El lienzo se ajusta al espacio libre de la caja del modal (que ya cabe en el viewport por CSS):
+  // ancho interno de la caja y alto que queda tras el encabezado y los textos de abajo.
+  function altoExterno(el) {
+    if (!el || el.offsetParent === null) return 0;
+    const s = getComputedStyle(el);
+    return el.offsetHeight + parseFloat(s.marginTop) + parseFloat(s.marginBottom);
+  }
   function medir() {
-    const prop = C.MUNDO_W / C.MUNDO_H;
-    const w = Math.max(240, Math.min(window.innerWidth - 40, (window.innerHeight - 170) * prop, 1100));
-    const DPR = Math.min(2, window.devicePixelRatio || 1), cv = Mp.lienzo;
+    const prop = C.MUNDO_W / C.MUNDO_H, cv = Mp.lienzo, caja = cv.parentElement;
+    const vv = window.visualViewport;
+    const vw = vv ? vv.width : window.innerWidth, vh = vv ? vv.height : window.innerHeight;
+    const sp = getComputedStyle(Mp.panel), sc = getComputedStyle(caja);
+    const px = (s, a, b) => parseFloat(s[a]) + parseFloat(s[b]);
+    // espacio máximo de la caja = viewport - padding del fondo; luego se resta el "marco" de la caja
+    const cajaW = vw - px(sp, 'paddingLeft', 'paddingRight');
+    const cajaH = vh - px(sp, 'paddingTop', 'paddingBottom');
+    const bordeCv = px(getComputedStyle(cv), 'borderLeftWidth', 'borderRightWidth');
+    const libreW = cajaW - px(sc, 'paddingLeft', 'paddingRight') - px(sc, 'borderLeftWidth', 'borderRightWidth') - bordeCv;
+    const libreH = cajaH - px(sc, 'paddingTop', 'paddingBottom') - px(sc, 'borderTopWidth', 'borderBottomWidth') - bordeCv -
+      altoExterno(caja.querySelector('header')) - altoExterno($('mapa-estado')) - altoExterno($('mapa-ayuda')) - 2;
+    const w = Math.max(120, Math.min(libreW, libreH * prop, 1100));
+    const DPR = Math.min(2, window.devicePixelRatio || 1);
     cv.style.width = w + 'px'; cv.style.height = (w / prop) + 'px';
     cv.width = Math.round(w * DPR); cv.height = Math.round((w / prop) * DPR);
     Mp.anchoCss = w;
@@ -315,7 +333,15 @@
     $('mapa-no').addEventListener('click', Mp.rechazarDestino);
     Mp.confirmEl.addEventListener('click', (ev) => { if (ev.target === Mp.confirmEl) Mp.rechazarDestino(); });
     Mp.panel.addEventListener('click', (ev) => { if (ev.target === Mp.panel) Mp.cerrar(); });
-    window.addEventListener('resize', () => { if (Mp.abierto) medir(); });
+    // al girar el celular o cambiar el alto visible (barra del navegador), se vuelve a medir y pintar
+    let pendiente = 0;
+    const remedir = () => {
+      if (!Mp.abierto || pendiente) return;
+      pendiente = requestAnimationFrame(() => { pendiente = 0; if (Mp.abierto) { medir(); Mp.dibGrande(0); } });
+    };
+    window.addEventListener('resize', remedir);
+    window.addEventListener('orientationchange', () => setTimeout(remedir, 150));
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', remedir);
     window.addEventListener('keydown', (e) => {
       if (Mp.abierto && Mp.confirmando) {
         e.stopImmediatePropagation();

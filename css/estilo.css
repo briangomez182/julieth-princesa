@@ -81,6 +81,11 @@ body.jugando #hud { opacity: 1; }
 #botones button.apagado { background: #e2d3cc; }
 #botones button.apagado svg { opacity: .35; }
 
+/* Celular / táctil: HUD pegado arriba (respetando el notch), sin reloj/castillos
+   (chocaba con la palanca y el botón de saltar) ni botón de pantalla completa */
+body.tactil #hud { padding-top: calc(6px + env(safe-area-inset-top)); }
+body.tactil #panel-reino, body.tactil #btn-pantalla { display: none; }
+
 .sacude { animation: sacude .35s; }
 @keyframes sacude { 30% { transform: scale(1.14) rotate(-2deg); } 60% { transform: scale(.96) rotate(1.500deg); } }
 @keyframes late { 50% { opacity: .55; } }
@@ -170,7 +175,7 @@ body.tactil.jugando #tactil { display: block; }
   width: 132px; height: 132px; border-radius: 50%; z-index: 4; pointer-events: none;
   background: rgba(255, 246, 229, .38); border: 4px solid rgba(107, 36, 96, .5);
 }
-#palanca-base.viva { bottom: auto; margin: -66px 0 0 -66px; background: rgba(255, 246, 229, .6); }
+#palanca-base.viva { background: rgba(255, 246, 229, .6); border-color: rgba(107, 36, 96, .75); }
 #palanca-perilla {
   position: absolute; left: 50%; top: 50%; width: 62px; height: 62px; border-radius: 50%; transform: translate(-50%, -50%);
   background: var(--rosa); border: 4px solid var(--baya); box-shadow: inset 0 5px 0 rgba(255, 255, 255, .4);
@@ -277,19 +282,21 @@ body.tactil .teclas li:not(.solo-tactil) { display: none; }
   background: #fff6e5; color: #6b2460; border: 2.5px solid #6b2460; border-radius: 8px; padding: 3px 6px;
 }
 body.jugando:not(.charla):not(.mapa) #minimapa { display: block; }
-body.tactil #minimapa { bottom: auto; top: 118px; left: 14px; width: 96px; height: 96px; }
+body.tactil #minimapa { bottom: auto; top: calc(96px + env(safe-area-inset-top)); left: calc(14px + env(safe-area-inset-left)); width: 96px; height: 96px; }
 body.tactil #minimapa canvas { width: 96px; height: 96px; }
 body.tactil #minimapa kbd { display: none; }
 
 #mapa {
   position: fixed; inset: 0; z-index: 30; display: none; align-items: center; justify-content: center;
-  background: rgba(40, 18, 56, .55); padding: 16px;
+  background: rgba(40, 18, 56, .55);
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
 }
 #mapa.visible { display: flex; animation: aparece .2s ease-out; }
 @keyframes aparece { from { opacity: 0; transform: scale(.96); } }
 #mapa .mapa-caja {
   background: #fff6e5; border: 5px solid #6b2460; border-radius: 26px; padding: 14px 16px 12px;
-  box-shadow: 0 10px 0 rgba(107, 36, 96, .4); max-width: 100%;
+  box-shadow: 0 10px 0 rgba(107, 36, 96, .4); max-width: 100%; max-height: 100%;
+  display: flex; flex-direction: column; min-height: 0; overflow: hidden; box-sizing: border-box;
 }
 #mapa header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
 #mapa h2 { margin: 0; font-family: inherit; font-weight: 900; font-size: 22px; line-height: 1.1; color: #6b2460; }
@@ -297,7 +304,7 @@ body.tactil #minimapa kbd { display: none; }
   font-family: inherit; font-weight: 900; font-size: 15px; color: #fff; background: #ff5d8f; border: 3px solid #6b2460;
   border-radius: 999px; padding: 6px 14px; cursor: pointer; box-shadow: 0 4px 0 #6b2460;
 }
-#mapa-lienzo-grande { display: block; border-radius: 16px; border: 3px solid #6b2460; background: #2f8f4e; margin: 0 auto; }
+#mapa-lienzo-grande { display: block; flex: 0 0 auto; max-width: 100%; touch-action: manipulation; border-radius: 16px; border: 3px solid #6b2460; background: #2f8f4e; margin: 0 auto; }
 #mapa-estado { margin: 8px 0 0; text-align: center; font-weight: 900; color: #6b2460; font-size: 16px; }
 #mapa-ayuda { margin: 4px 0 0; text-align: center; font-weight: 700; color: #3f8f55; font-size: 13px; }
 #mapa-lienzo-grande { cursor: crosshair; }
@@ -330,7 +337,10 @@ body.tactil #minimapa kbd { display: none; }
 body.espejo #btn-hablar, body.espejo #btn-montar, body.espejo #tactil, body.espejo #aviso, body.espejo #minimapa { display: none !important; }
 .espejo-escena { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; max-height: 100%; }
 .espejo-marco {
-  position: relative; width: min(62vh, 78vw, 520px); aspect-ratio: 3 / 4; border-radius: 50%;
+  /* el marco se achica según el alto que dejan libre el texto, los botones y las 3 opciones */
+  position: relative; aspect-ratio: 3 / 4; border-radius: 50%; flex: 0 0 auto;
+  width: min(78vw, 520px, calc((100vh - var(--esp-reserva, 400px)) * .75));
+  width: min(78vw, 520px, calc((100dvh - var(--esp-reserva, 400px)) * .75));
   padding: clamp(14px, 2.6vh, 24px);
   background: conic-gradient(from 20deg, #fff0a8, #ffc93c, #d98a00, #ffc93c, #fff0a8, #e0a020, #ffc93c, #fff0a8);
   box-shadow: 0 0 0 5px #6b2460, 0 0 40px 10px rgba(255, 220, 140, .55), 0 0 120px 30px rgba(190, 150, 255, .35);
@@ -382,6 +392,8 @@ body.espejo #btn-hablar, body.espejo #btn-montar, body.espejo #tactil, body.espe
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;
   width: 100%; max-width: 620px;
 }
+#espejo-opciones .espejo-opcion:nth-child(3):last-child { grid-column: 1 / -1; justify-self: center; width: calc(50% - 5px);
+}
 #espejo-opciones[hidden] { display: none; }
 .espejo-opcion {
   position: relative; overflow: hidden; min-height: 56px;
@@ -415,19 +427,64 @@ body.espejo #btn-hablar, body.espejo #btn-montar, body.espejo #tactil, body.espe
   100% { opacity: 1; transform: none; }
 }
 @keyframes opcionBrillo { 0% { transform: translateX(-120%); } 40%, 100% { transform: translateX(120%); } }
+/* pantallas anchas: las 3 opciones en una sola fila */
+@media (min-width: 700px) {
+  #espejo { --esp-reserva: 330px; }
+  #espejo-opciones { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 860px; }
+  #espejo-opciones .espejo-opcion:nth-child(3):last-child { grid-column: auto; width: auto; }
+}
+/* celular vertical: opciones en columna, botones y textos más compactos */
 @media (max-width: 479px) {
-  #espejo-opciones { grid-template-columns: 1fr; gap: 8px; }
-  .espejo-opcion { font-size: 17px; min-height: 46px; padding: 6px 12px; }
-}
-@media (max-height: 640px) {
-  .espejo-marco { width: min(44vh, 70vw, 360px); margin-top: clamp(22px, 5vh, 40px); }
+  #espejo { --esp-reserva: 390px; padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom)); }
   .espejo-escena { gap: 8px; }
-  .espejo-opcion { min-height: 52px; padding: 8px 14px; }
+  #espejo-opciones { grid-template-columns: 1fr; gap: 8px; }
+  #espejo-opciones .espejo-opcion:nth-child(3):last-child { grid-column: auto; width: auto; }
+  .espejo-opcion { font-size: 16px; min-height: 44px; padding: 6px 12px; border-width: 3px; border-radius: 16px; }
+  #espejo-botones { gap: 8px; }
+  #espejo-botones button { font-size: 15px; padding: 6px 13px; border-width: 3px; border-radius: 16px; box-shadow: 0 3px 0 var(--baya); }
+  #espejo-texto { font-size: 18px; }
 }
-@media (max-height: 460px) {
-  .espejo-marco { width: min(36vh, 60vw, 260px); }
+/* celular horizontal (pantalla baja): espejo a la izquierda, texto, botones y opciones a la derecha */
+@media (orientation: landscape) and (max-height: 540px) {
+  #espejo {
+    padding: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  }
+  .espejo-escena {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: 1fr auto 1fr;
+    column-gap: 18px; row-gap: 8px; align-items: center; justify-items: center; max-width: 920px; height: 100%;
+  }
+  .espejo-marco {
+    grid-column: 1; grid-row: 1 / 4; margin-top: 24px; padding: clamp(10px, 2.6vh, 18px);
+    width: min(44vw, calc((100vh - 48px) * .75)); width: min(44vw, calc((100dvh - 48px) * .75));
+  }
+  #espejo-texto { grid-column: 2; grid-row: 1; align-self: end; font-size: 18px; max-width: 100%; }
+  #espejo-texto.grande { font-size: clamp(20px, 6vh, 28px); }
+  #espejo-botones { grid-column: 2; grid-row: 2; gap: 8px; }
+  #espejo-botones button { font-size: 15px; padding: 6px 13px; border-width: 3px; border-radius: 16px; box-shadow: 0 3px 0 var(--baya); }
+  #espejo-opciones { grid-column: 2; grid-row: 3; align-self: start; grid-template-columns: 1fr; gap: 8px; max-width: 460px; }
+  #espejo-opciones .espejo-opcion:nth-child(3):last-child { grid-column: auto; width: auto; }
+  .espejo-opcion { font-size: 16px; min-height: 42px; padding: 5px 12px; border-width: 3px; border-radius: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .espejo-opcion { animation: none; }
   .espejo-opcion::after { animation: none; display: none; }
+}
+
+/* ---------- Mapa y espejo en pantallas chicas (celular) ---------- */
+@media (max-height: 520px), (max-width: 560px) {
+  #mapa { padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left)); }
+  #mapa .mapa-caja { border-width: 4px; border-radius: 18px; padding: 8px 10px 6px; box-shadow: 0 6px 0 rgba(107, 36, 96, .4); }
+  #mapa header { margin-bottom: 6px; }
+  #mapa h2 { font-size: 18px; }
+  #mapa-cerrar { font-size: 14px; padding: 4px 12px; box-shadow: 0 3px 0 #6b2460; }
+  #mapa-lienzo-grande { border-radius: 12px; border-width: 2px; }
+  #mapa-estado { margin-top: 5px; font-size: 14px; }
+  #mapa-ayuda { font-size: 12px; }
+}
+@media (max-height: 460px) {
+  #mapa-ayuda { display: none; }
+  #mapa .mapa-caja { padding: 6px 10px 5px; }
+  #mapa header { margin-bottom: 4px; }
+  #mapa h2 { font-size: 16px; }
+  #mapa-estado { margin-top: 3px; font-size: 13px; }
 }

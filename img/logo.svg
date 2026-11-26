@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>Princesa Julieth</title>
+  <defs>
+    <radialGradient id="fondo" cx="50%" cy="38%" r="70%">
+      <stop offset="0" stop-color="#ffd3df"/>
+      <stop offset=".55" stop-color="#ff9dbb"/>
+      <stop offset="1" stop-color="#ff5d8f"/>
+    </radialGradient>
+    <clipPath id="marco"><rect x="12" y="12" width="488" height="488" rx="110"/></clipPath>
+  </defs>
+  <rect x="12" y="12" width="488" height="488" rx="110" fill="url(#fondo)"/>
+  <g clip-path="url(#marco)">
+    <!-- destellos -->
+    <g fill="#fff6e5" opacity=".85">
+      <path d="M78 96l6 16 16 6-16 6-6 16-6-16-16-6 16-6Z"/>
+      <path d="M432 70l5 12 12 5-12 5-5 12-5-12-12-5 12-5Z"/>
+      <path d="M446 250l4 10 10 4-10 4-4 10-4-10-10-4 10-4Z"/>
+    </g>
+    <!-- vestido -->
+    <path d="M96 520c0-58 50-92 92-98h136c42 6 92 40 92 98Z" fill="#ff7fae" stroke="#d63f73" stroke-width="5"/>
+    <path d="M190 422h66v98h-92c-6-50 8-88 26-98Z" fill="#ff9dc0"/>
+    <path d="M256 434l11 22 24 4-17 17 4 24-22-11-22 11 4-24-17-17 24-4Z" fill="#ffd23f" stroke="#e08a00" stroke-width="4" stroke-linejoin="round"/>
+    <rect x="232" y="400" width="48" height="36" fill="#e6b08c"/>
+    <!-- trenza con mechón violeta -->
+    <g>
+      <ellipse cx="128" cy="370" rx="34" ry="29" fill="#2a1a1c"/>
+      <ellipse cx="114" cy="414" rx="31" ry="26" fill="#8a4fd6"/>
+      <ellipse cx="104" cy="456" rx="28" ry="24" fill="#2a1a1c"/>
+      <ellipse cx="98" cy="494" rx="25" ry="21" fill="#8a4fd6"/>
+    </g>
+    <!-- pelo de atrás -->
+    <circle cx="256" cy="292" r="160" fill="#2a1a1c"/>
+    <!-- moño alto -->
+    <circle cx="256" cy="98" r="64" fill="#2a1a1c"/>
+    <path d="M222 74a42 42 0 0 1 46-22" fill="none" stroke="#5a3a36" stroke-width="10" stroke-linecap="round"/>
+    <!-- cinta rosa del moño -->
+    <path d="M204 80l-40-30-6 46Z M204 80l14-44 22 28Z" fill="#ff5d8f" stroke="#d63f73" stroke-width="4" stroke-linejoin="round"/>
+    <circle cx="204" cy="80" r="11" fill="#ff8fb0"/>
+    <!-- orejitas y aros -->
+    <circle cx="112" cy="318" r="22" fill="#e6b08c"/>
+    <circle cx="400" cy="318" r="22" fill="#e6b08c"/>
+    <circle cx="108" cy="350" r="9" fill="#ffd23f" stroke="#d98500" stroke-width="3"/>
+    <circle cx="404" cy="350" r="9" fill="#ffd23f" stroke="#d98500" stroke-width="3"/>
+    <!-- cara -->
+    <circle cx="256" cy="300" r="142" fill="#f6cfae"/>
+    <!-- pelo tirante hacia atrás -->
+    <path d="M112 312C102 176 196 146 256 146s154 30 144 166c-14-62-62-98-144-100-82 2-130 38-144 100Z" fill="#2a1a1c"/>
+    <path d="M150 226c18-34 54-54 96-58M290 170c32 6 58 22 74 46" fill="none" stroke="#5a3a36" stroke-width="9" stroke-linecap="round"/>
+    <!-- corona -->
+    <g transform="translate(256 222) scale(.86) translate(-256 -222)">
+    <path d="M166 222l-10-92 54 42 46-80 46 80 54-42-10 92Z" fill="#ffd23f" stroke="#d98500" stroke-width="9" stroke-linejoin="round"/>
+    <rect x="182" y="204" width="148" height="10" rx="5" fill="#fff6b0"/>
+    <circle cx="156" cy="124" r="15" fill="#ff5d8f" stroke="#d63f73" stroke-width="3"/>
+    <circle cx="356" cy="124" r="15" fill="#ff5d8f" stroke="#d63f73" stroke-width="3"/>
+    <circle cx="256" cy="86" r="18" fill="#ff5d8f" stroke="#d63f73" stroke-width="3"/>
+    <circle cx="256" cy="176" r="17" fill="#ff8fb8" stroke="#d63f73" stroke-width="3"/>
+    <circle cx="250" cy="170" r="5" fill="#fff"/>
+    </g>
+    <!-- cejas -->
+    <path d="M178 262q28-16 56-4M278 258q28-12 56 4" fill="none" stroke="#2a1a1c" stroke-width="9" stroke-linecap="round"/>
+    <!-- ojos -->
+    <ellipse cx="206" cy="310" rx="23" ry="31" fill="#2a1810"/>
+    <ellipse cx="306" cy="310" rx="23" ry="31" fill="#2a1810"/>
+    <circle cx="214" cy="298" r="9" fill="#fff"/>
+    <circle cx="314" cy="298" r="9" fill="#fff"/>
+    <circle cx="199" cy="324" r="4" fill="#fff"/>
+    <circle cx="299" cy="324" r="4" fill="#fff"/>
+    <path d="M184 294l-14-12M188 284l-10-14M328 294l14-12M324 284l10-14" stroke="#2a1810" stroke-width="7" stroke-linecap="round"/>
+    <!-- cachetes -->
+    <ellipse cx="170" cy="358" rx="28" ry="17" fill="#ff7896" opacity=".5"/>
+    <ellipse cx="342" cy="358" rx="28" ry="17" fill="#ff7896" opacity=".5"/>
+    <!-- boca feliz -->
+    <path d="M220 360a36 36 0 0 0 72 0Z" fill="#8c2f3f"/>
+    <path d="M232 384a24 13 0 0 1 48 0 30 30 0 0 1-48 0Z" fill="#ff8fa8"/>
+    <rect x="232" y="360" width="48" height="10" rx="3" fill="#fff"/>
+  </g>
+  <rect x="12" y="12" width="488" height="488" rx="110" fill="none" stroke="#6b2460" stroke-width="16"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Princesa Julieth</title>
+  <circle cx="32" cy="32" r="31" fill="#ff5d8f"/>
+  <circle cx="32" cy="38" r="21" fill="#2a1a1c"/>
+  <circle cx="32" cy="12" r="7.5" fill="#2a1a1c"/>
+  <circle cx="32" cy="39" r="18" fill="#f6cfae"/>
+  <path d="M14 40C13 24 25 21 32 21s19 3 18 19c-2-7-8-11-18-11s-16 4-18 11Z" fill="#2a1a1c"/>
+  <path d="M19.500 29l-1.500-13 7 5.500 7-10 7 10 7-5.500-1.500 13Z" fill="#ffd23f" stroke="#b86a00" stroke-width="1.600" stroke-linejoin="round"/>
+  <circle cx="32" cy="23.500" r="2.300" fill="#ff5d8f"/>
+  <ellipse cx="25.500" cy="40" rx="3" ry="4" fill="#2a1810"/>
+  <ellipse cx="38.500" cy="40" rx="3" ry="4" fill="#2a1810"/>
+  <circle cx="26.500" cy="38.500" r="1.200" fill="#fff"/>
+  <circle cx="39.500" cy="38.500" r="1.200" fill="#fff"/>
+  <ellipse cx="21" cy="46" rx="3.500" ry="2.200" fill="#ff7896" opacity=".6"/>
+  <ellipse cx="43" cy="46" rx="3.500" ry="2.200" fill="#ff7896" opacity=".6"/>
+  <path d="M27.500 46.500a4.500 4.500 0 0 0 9 0Z" fill="#8c2f3f"/>
+</svg>

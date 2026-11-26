@@ -1,7 +1,7 @@
 /* El espejo mágico de los castillos: el Espejito Mágico aparece en primer plano, lee una
    pregunta al azar del banco de su castillo (J.EspejoPreguntas), piensa 5 segundos, responde
    quién gana (Julieth o Giulia) y abre la cámara frontal para que se vean reflejadas.
-   5 s después de la respuesta ofrece 4 preguntas nuevas (sin repetir en esta visita). */
+   5 s después de la respuesta ofrece 3 preguntas nuevas (sin repetir en esta visita). */
 (function () {
   const TEXTOS = {
     hola: '¡Hola, princesas! Soy el Espejito Mágico.',
@@ -64,7 +64,7 @@
   function ocultarOpciones() { Es.opciones = []; Es.opcEl.hidden = true; Es.opcEl.textContent = ''; }
   function mostrarOpciones() {
     const EP = J.EspejoPreguntas;
-    Es.opciones = (EP.opciones(Es.castillo, Es.hechas, 4) || []).filter(Boolean);
+    Es.opciones = (EP.opciones(Es.castillo, Es.hechas, 3) || []).filter(Boolean);
     Es.opcEl.textContent = '';
     if (!Es.opciones.length) { Es.opcEl.hidden = true; return; }
     Es.opciones.forEach((p) => {
@@ -274,7 +274,7 @@
       e.stopImmediatePropagation();
       if (e.code === 'Escape' || e.code === 'KeyE') { e.preventDefault(); Es.cerrar(); }
       else if (e.code === 'Enter' || e.code === 'Space') { e.preventDefault(); if (!e.repeat && !Es.btnOtra.hidden) otraPregunta(); }
-      else if (/^(Digit|Numpad)[1-4]$/.test(e.code) && !Es.opcEl.hidden) {
+      else if (/^(Digit|Numpad)[1-3]$/.test(e.code) && !Es.opcEl.hidden) {
         const p = Es.opciones[+e.code.slice(-1) - 1]; if (p && !e.repeat) { e.preventDefault(); otraPregunta(p); }
       }
     }, true);

@@ -5,7 +5,7 @@
    API (J.EspejoPreguntas):
      lista(castilloId)                    preguntas del castillo (o las de 'real')
      azar(castilloId, excluirIds)         una al azar, evitando esos ids
-     opciones(castilloId, excluirIds, n)  n distintas al azar (por defecto 4)
+     opciones(castilloId, excluirIds, n)  n distintas al azar (por defecto 3)
      ganadora(pregunta)                   'Julieth' | 'Giulia'
      respuesta(pregunta, ganadora)        frase que dice el espejo */
 (function () {
@@ -338,7 +338,7 @@
   }
 
   function opciones(castilloId, excluirIds, n) {
-    if (n == null) n = 4;
+    if (n == null) n = 3;
     var l = libres(castilloId, excluirIds);
     return mezclar(l.ok).concat(mezclar(l.fuera)).slice(0, n);
   }
